@@ -1,5 +1,5 @@
 job "dlna" {
-  datacenters = ["dc1"]
+  datacenters = ["local"]
 
   group "dlna-group" {
     network {
@@ -61,7 +61,7 @@ job "dlna" {
       }
 
       resources {
-        cpu    = 1300
+        cpu    = 2300
         memory = 1000
       }
     }

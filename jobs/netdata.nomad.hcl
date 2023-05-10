@@ -1,5 +1,5 @@
 job "netdata" {
-  datacenters = ["dc1"]
+  datacenters = ["local"]
 
   group "netdata" {
     network {

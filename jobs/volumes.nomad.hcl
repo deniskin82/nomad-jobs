@@ -1,5 +1,5 @@
 job "volumes" {
-  datacenters = ["dc1"]
+  datacenters = ["local"]
   type = "sysbatch"
   periodic {
     cron             = "@daily"

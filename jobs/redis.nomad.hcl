@@ -1,5 +1,5 @@
 job "redis" {
-  datacenters = ["dc1"]
+  datacenters = ["local"]
 
   group "redis-group" {
     network {
