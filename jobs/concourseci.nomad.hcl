@@ -4,7 +4,7 @@ job "concourse" {
   group "cicd" {
     count = 1
     network {
-      mode = "host"
+      mode = "cni/bridge"
       port "db" {
         static = 5432
         to = 5432
@@ -23,7 +23,6 @@ job "concourse" {
       driver = "containerd-driver"
       config {
         image = "postgres:15.3-alpine3.17"
-        host_network = true
         mounts = [
           {
           type    = "bind"
@@ -81,7 +80,6 @@ job "concourse" {
 
       config {
         image = "concourse/concourse"
-        host_network = true
         command = "web"
       }
       template {
