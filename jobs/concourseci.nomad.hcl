@@ -139,9 +139,10 @@ EOF
         port = "http"
         provider = "consul"
         check {
-          name = "ci port check"
-          type = "tcp"
+          name = "ci health check"
+          type = "http"
           port = "http"
+          path = "/api/v1/info"
           interval = "30s"
           timeout = "5s"
         }
