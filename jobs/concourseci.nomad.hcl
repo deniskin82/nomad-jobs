@@ -35,8 +35,8 @@ job "concourse" {
       }
 
       env {
-        POSTGRES_USER="cicd"
-        POSTGRES_PASSWORD="cicdpassword"
+        POSTGRES_USER="{{ key \"concourse/db/user\" }}"
+        POSTGRES_PASSWORD="{{ key \"concourse/db/password\" }}"
         PGDATA="/database"
         POSTGRES_DB="concourse"
       }
