@@ -135,7 +135,9 @@ EOF
         env = true
       }
       service {
-        name = "concourse"
+        tags = ["ci","urlprefix-/ci strip=/ci"]
+
+        name = "ci"
         port = "http"
         provider = "consul"
         check {
