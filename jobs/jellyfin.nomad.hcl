@@ -52,9 +52,10 @@ job "dlna" {
         provider = "consul"
 
         check {
-          name     = "jellyfin port alive"
-          type     = "tcp"
+          name     = "jellyfin healthcheck"
+          type     = "http"
           port     = "jellyfin"
+          path     = "/health"
           interval = "30s"
           timeout  = "3s"
         }
@@ -62,7 +63,7 @@ job "dlna" {
 
       resources {
         cpu    = 2300
-        memory = 1000
+        memory = 1400
       }
     }
   }
