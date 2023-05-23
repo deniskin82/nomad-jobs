@@ -45,7 +45,7 @@ job "dlna" {
       }
 
       service {
-        tags = ["jellyfin"]
+        tags = ["jellyfin","urlprefix-/web"]
 
         name     = "jellyfin"
         port     = "jellyfin"

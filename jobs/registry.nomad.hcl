@@ -9,14 +9,14 @@ job "docker-registry" {
       }
 
       port "ui" {
-        static = 8080
+        static = 8081
         to = 80
       }
     }
 
     service {
       name = "registry"
-      tags = ["hub"]
+      tags = ["hub","urlprefix-/hub strip=/hub"]
       port = "docker"
 
       check {
@@ -29,7 +29,7 @@ job "docker-registry" {
 
     service {
       name = "registry"
-      tags = ["ui"]
+      tags = ["ui","urlprefix-/docker-ui strip=/docker-ui"]
       port = "ui"
 
       check {

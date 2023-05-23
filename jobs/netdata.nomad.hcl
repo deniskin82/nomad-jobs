@@ -56,7 +56,7 @@ job "netdata" {
       }
 
       service {
-        tags = ["global","netdata"]
+        tags = ["urlprefix-/netdata strip=/netdata","global","netdata"]
 
         name     = "netdata"
         port     = "netdata"
