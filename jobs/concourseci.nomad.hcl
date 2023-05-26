@@ -22,7 +22,7 @@ job "concourse" {
     task "postgres" {
       driver = "containerd-driver"
       config {
-        image = "postgres:15.3-alpine3.17"
+        image = "mirror.service.consul:5001/library/postgres:15.3-alpine3.17"
         mounts = [
           {
           type    = "bind"
@@ -79,7 +79,7 @@ job "concourse" {
       driver = "containerd-driver"
 
       config {
-        image = "concourse/concourse"
+        image = "mirror.service.consul:5001/concourse/concourse"
         command = "web"
       }
       template {

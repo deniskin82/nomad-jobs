@@ -19,7 +19,7 @@ job "dlna" {
       driver = "containerd-driver"
 
       config {
-        image = "jellyfin/jellyfin:10.8.10"
+        image = "mirror.service.consul:5001/jellyfin/jellyfin:10.8.10"
         host_network = true
         hostname = "jellyfin"
         mounts = [{

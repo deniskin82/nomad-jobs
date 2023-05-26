@@ -12,7 +12,7 @@ job "redis" {
       driver = "containerd-driver"
 
       config {
-        image = "docker.io/library/redis:alpine"
+        image = "mirror.service.consul:5001/library/redis:alpine"
       }
 
       service {

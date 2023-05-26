@@ -18,7 +18,7 @@ job "netdata" {
         PGID = 1000
       }
       config {
-        image = "docker.io/netdata/netdata"
+        image = "mirror.service.consul:5001/netdata/netdata:v1.39.1"
         cap_add = [
           "SYS_PTRACE"
         ]

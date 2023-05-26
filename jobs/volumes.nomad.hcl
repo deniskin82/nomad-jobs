@@ -15,12 +15,10 @@ job "volumes" {
         data = <<EOH
 #!/bin/sh
 set -xe
-{{range tree "mount/data/volumes/"}}
-mkdir -v -m777 -p /data/volumes/./{{.Key}}
-chmod 0777 /data/volumes/./{{.Key}}{{end}}
-sleep 3
-        EOH
-
+{{ range tree "mount/data/volumes" }}mkdir -v -m777 -p /data/volumes/./{{.Key}}
+chmod 0777 /data/volumes/./{{.Key}}
+{{ end }}sleep 3
+EOH
         destination = "tmp/mkdirs.sh"
       }
       config {

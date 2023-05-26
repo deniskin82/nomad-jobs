@@ -20,21 +20,20 @@ job "fabio" {
     }
 
     service {
-      name = "fabio-lb"
+      name = "lb"
       tags = ["fabio"]
-      port = "ui"
+      port = "http"
 
       check {
-        type     = "http"
-        port     = "ui"
-        path     = "/health"
+        type     = "tcp"
+        port     = "http"
         interval = "10s"
         timeout  = "2s"
       }
     }
 
     service {
-      name = "fabio-lb-tls"
+      name = "lb"
       tags = ["fabio"]
       port = "https"
 
@@ -53,9 +52,9 @@ job "fabio" {
       port = "ui"
 
       check {
-        type     = "tcp"
+        type     = "http"
         port     = "ui"
-        path     = "/"
+        path     = "/health"
         interval = "10s"
         timeout  = "2s"
       }
@@ -65,7 +64,7 @@ job "fabio" {
       driver = "containerd-driver"
 
       config {
-        image   = "fabiolb/fabio"
+        image   = "mirror.service.consul:5001/fabiolb/fabio:latest"
         host_network = true
         args = [
           "-registry.consul.addr=http://consul.service.consul:8500/",
