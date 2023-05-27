@@ -17,12 +17,21 @@ job "concourse" {
         static = 2222
         to = 2222
       }
+      port "worker" {
+        static = 7777
+        to = 7777
+      }
+      port "baggageclaim" {
+        static = 7788
+        to = 7788
+      }
     }
 
     task "postgres" {
       driver = "containerd-driver"
       config {
         image = "mirror.service.consul:5001/library/postgres:15.3-alpine3.17"
+
         mounts = [
           {
           type    = "bind"
@@ -109,6 +118,7 @@ EOF
       }
       template {
         data = <<EOF
+CONCOURSE_LOG_LEVEL=error
 CONCOURSE_POSTGRES_HOST={{env "NOMAD_HOST_IP_db"}}
 CONCOURSE_POSTGRES_PORT={{env "NOMAD_HOST_PORT_db"}}
 CONCOURSE_POSTGRES_DATABASE=concourse
@@ -150,19 +160,77 @@ EOF
         }
       }
     }
-    restart {
-      attempts = 4
-      interval = "5m"
-      delay = "25s"
-      mode = "delay"
+    task "concourse-worker" {
+      driver = "containerd-driver"
+
+      config {
+        image = "mirror.service.consul:5001/concourse/concourse"
+        command = "worker"
+        privileged = true
+        mounts = [{
+          type    = "bind"
+          source  = "/sys/fs"
+          target  = "/sys/fs"
+          options = ["rbind", "ro"]
+        }]
+      }
+
+      service {
+        name = "worker"
+        tags = ["ci","worker"]
+        port = "worker"
+        provider = "consul"
+
+        check {
+          name     = "alive"
+          type     = "tcp"
+          interval = "10s"
+          timeout  = "2s"
+        }
+      }
+      template {
+        data = <<EOF
+{{ key "concourse/web/tsa_host_key_pub" }}
+EOF
+        destination = "${NOMAD_SECRETS_DIR}/tsa_host_key.pub"
+      }
+      template {
+        data = <<EOF
+{{ key "concourse/worker/private/test.key" }}
+EOF
+        destination = "${NOMAD_SECRETS_DIR}/worker.key"
+      }
+      template {
+        data = <<EOF
+CONCOURSE_LOG_LEVEL=error
+CONCOURSE_TSA_HOST={{env "NOMAD_HOST_ADDR_tsa"}}
+CONCOURSE_TSA_PUBLIC_KEY={{ env "NOMAD_SECRETS_DIR" }}/tsa_host_key.pub
+CONCOURSE_TSA_WORKER_PRIVATE_KEY={{ env "NOMAD_SECRETS_DIR" }}/worker.key
+CONCOURSE_GARDEN_DNS_PROXY_ENABLE="true"
+CONCOURSE_BIND_IP=0.0.0.0
+CONCOURSE_BAGGAGECLAIM_BIND_IP=0.0.0.0
+CONCOURSE_BAGGAGECLAIM_DRIVER=overlay
+CONCOURSE_WORKER_RUNTIME=containerd
+CONCOURSE_RUNTIME=containerd
+EOF
+        destination = "local/data.env"
+        change_mode = "restart"
+        env = true
+      }
     }
+    // restart {
+    //   attempts = 4
+    //   interval = "5m"
+    //   delay = "25s"
+    //   mode = "delay"
+    // }
   }
 
-  update {
-    max_parallel = 1
-    min_healthy_time = "5s"
-    healthy_deadline = "3m"
-    auto_revert = false
-    canary = 0
-  }
+  // update {
+  //   max_parallel = 1
+  //   min_healthy_time = "5s"
+  //   healthy_deadline = "3m"
+  //   auto_revert = false
+  //   canary = 0
+  // }
 }
