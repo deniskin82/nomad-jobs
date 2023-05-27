@@ -62,7 +62,7 @@ job "concourse" {
         }
       }
       service {
-        name = "postgres"
+        name = "ci-db"
         tags = ["pg"]
         port = "db"
         provider = "consul"
@@ -148,11 +148,11 @@ EOF
         env = true
       }
       service {
-        tags = ["ci","urlprefix-/ci strip=/ci"]
-
         name = "ci"
         port = "http"
         provider = "consul"
+        tags = ["web","urlprefix-/ci strip=/ci"]
+
         check {
           name = "ci health check"
           type = "http"
@@ -179,8 +179,8 @@ EOF
       }
 
       service {
-        name = "worker"
-        tags = ["ci","worker"]
+        name = "ci-worker"
+        tags = ["worker"]
         port = "worker"
         provider = "consul"
 
