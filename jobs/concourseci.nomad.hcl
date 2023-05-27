@@ -102,7 +102,9 @@ EOF
 {{ range tree "concourse/workers/" }}
 {{.Value}}{{end}}
 EOF
-        destination = "${NOMAD_SECRETS_DIR}/authorized_worker_keys"
+        destination = "local/authorized_worker_keys"
+        change_mode = "signal"
+        change_signal = "SIGHUP"
       }
       template {
         data = <<EOF
@@ -132,14 +134,15 @@ CONCOURSE_CLIENT_SECRET="{{ key "concourse/secret/client" }}"
 CONCOURSE_TSA_CLIENT_SECRET="{{ key "concourse/secret/tsa" }}"
 CONCOURSE_X_FRAME_OPTIONS=allow
 CONCOURSE_CONTENT_SECURITY_POLICY="*"
-CONCOURSE_CLUSTER_NAME="homelab"
+CONCOURSE_CLUSTER_NAME="HomeLab"
 CONCOURSE_ENABLE_PIPELINE_INSTANCES="true"
 CONCOURSE_ENABLE_ACROSS_STEP="true"
 CONCOURSE_ENABLE_CACHE_STREAMED_VOLUMES="true"
 CONCOURSE_ENABLE_RESOURCE_CAUSALITY="true"
 CONCOURSE_SESSION_SIGNING_KEY={{ env "NOMAD_SECRETS_DIR" }}/session_signing_key
 CONCOURSE_TSA_HOST_KEY={{ env "NOMAD_SECRETS_DIR" }}/tsa_host_key
-CONCOURSE_TSA_AUTHORIZED_KEYS={{ env "NOMAD_SECRETS_DIR" }}/authorized_worker_keys
+CONCOURSE_TSA_AUTHORIZED_KEYS=local/authorized_worker_keys
+CONCOURSE_ENABLE_P2P_VOLUME_STREAMING="true"
 EOF
         destination = "${NOMAD_SECRETS_DIR}/data.env"
         env = true
