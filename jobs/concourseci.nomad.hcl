@@ -184,12 +184,21 @@ EOF
       service {
         name = "ci-worker"
         tags = ["worker"]
-        port = "worker"
         provider = "consul"
 
         check {
-          name     = "alive"
-          type     = "tcp"
+          name     = "garden"
+          type     = "http"
+          port     = "worker"
+          path     = "/ping"
+          interval = "10s"
+          timeout  = "2s"
+        }
+        check {
+          name     = "baggageclaim"
+          type     = "http"
+          port     = "baggageclaim"
+          path     = "/volumes"
           interval = "10s"
           timeout  = "2s"
         }
