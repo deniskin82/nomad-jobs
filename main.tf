@@ -4,6 +4,59 @@ provider "nomad" {
   ca_file = var.ca_file
 }
 
+provider "consul" {
+  address    = "consul.service.consul:8501"
+  scheme     = "https"
+  datacenter = "local"
+  ca_file    = var.ca_file
+}
+
+resource "consul_keys" "mounts" {
+  datacenter = "local"
+
+  key {
+    path  = "mount/data/volumes/netdata_cache"
+    value = ""
+  }
+  key {
+    path = "mount/data/volumes/netdata_data"
+    value = ""
+  }
+  key {
+    path = "mount/data/volumes/jellyfin/cache"
+    value = ""
+  }
+  key {
+    path = "mount/data/volumes/jellyfin/config"
+    value = ""
+  }
+  key {
+    path = "mount/data/volumes/docker_registry/cache"
+    value = ""
+  }
+  key {
+    path = "mount/data/volumes/docker_registry/data"
+    value = ""
+  }
+  key {
+    path = "mount/data/volumes/cicd/postgres"
+    value = ""
+  }
+}
+
+resource "consul_keys" "docker" {
+  datacenter = "local"
+
+  key {
+    path  = "docker/mirror/crt"
+    value = join("",[file(var.docker_cert),file(var.ca_file)])
+  }
+  key {
+    path  = "docker/mirror/key"
+    value = file(var.docker_key)
+  }
+}
+
 resource "nomad_job" "volumes" {
   jobspec = file("${path.module}/jobs/volumes.nomad.hcl")
   detach = false
@@ -21,6 +74,9 @@ resource "nomad_job" "registry" {
     enabled = true
     allow_fs = true
   }
+  depends_on = [
+    consul_keys.docker
+  ]
   purge_on_destroy = true
 }
 
