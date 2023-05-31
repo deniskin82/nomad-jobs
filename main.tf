@@ -1,8 +1,6 @@
 provider "nomad" {
   address = "https://nomad.service.consul:4646"
   region  = "global"
-  cert_file = "../vault/local/tls/nomad.crt"
-  key_file = "../vault/local/tls/nomad-key.pem"
   ca_file = var.ca_file
 }
 
