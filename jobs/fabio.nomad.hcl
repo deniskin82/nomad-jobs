@@ -14,9 +14,6 @@ job "fabio" {
       port "ui" {
         static = 9998
       }
-      // port "lb" {
-      //   static = 9999
-      // }
     }
 
     service {
