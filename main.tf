@@ -57,6 +57,26 @@ resource "consul_keys" "docker" {
   }
 }
 
+resource "consul_keys" "concourseci" {
+  datacenter = "local"
+  key {
+    path  = "concourse/db/password"
+    value = var.ci_db_password
+  }
+  key {
+    path = "concourse/db/user"
+    value = var.ci_db_user
+  }
+  key {
+    path = "concourse/secrets/client"
+    value = var.ci_secret_client
+  }
+  key {
+    path = "concourse/secrets/tsa"
+    value = var.ci_secret_tsa
+  }
+}
+
 resource "nomad_job" "volumes" {
   jobspec = file("${path.module}/jobs/volumes.nomad.hcl")
   detach = false
