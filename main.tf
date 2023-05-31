@@ -126,6 +126,19 @@ resource "nomad_job" "netdata" {
   purge_on_destroy = true
 }
 
+resource "nomad_job" "concourseci" {
+  jobspec = file("${path.module}/jobs/concourseci.nomad.hcl")
+  detach = false
+  hcl2 {
+    enabled = true
+    allow_fs = true
+  }
+  depends_on = [
+    nomad_job.registry
+  ]
+  purge_on_destroy = true
+}
+
 resource "nomad_job" "fabio" {
   jobspec = file("${path.module}/jobs/fabio.nomad.hcl")
   detach = false
