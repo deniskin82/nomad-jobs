@@ -11,6 +11,7 @@ resource "nomad_job" "volumes" {
     enabled = true
     allow_fs = true
   }
+  purge_on_destroy = true
 }
 
 resource "nomad_job" "registry" {
@@ -20,6 +21,7 @@ resource "nomad_job" "registry" {
     enabled = true
     allow_fs = true
   }
+  purge_on_destroy = true
 }
 
 resource "nomad_job" "jellyfin" {
@@ -29,6 +31,10 @@ resource "nomad_job" "jellyfin" {
     enabled = true
     allow_fs = true
   }
+  depends_on = [
+    nomad_job.registry
+  ]
+  purge_on_destroy = true
 }
 
 resource "nomad_job" "netdata" {
@@ -38,4 +44,21 @@ resource "nomad_job" "netdata" {
     enabled = true
     allow_fs = true
   }
+  depends_on = [
+    nomad_job.registry
+  ]
+  purge_on_destroy = true
+}
+
+resource "nomad_job" "fabio" {
+  jobspec = file("${path.module}/jobs/fabio.nomad.hcl")
+  detach = false
+  hcl2 {
+    enabled = true
+    allow_fs = true
+  }
+  depends_on = [
+    nomad_job.registry
+  ]
+  purge_on_destroy = true
 }
