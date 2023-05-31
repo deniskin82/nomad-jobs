@@ -64,7 +64,8 @@ job "fabio" {
         image   = "mirror.service.consul:5001/fabiolb/fabio:latest"
         host_network = true
         args = [
-          "-registry.consul.addr=http://consul.service.consul:8500/",
+          "-registry.consul.addr=https://consul.service.consul:8501/",
+          "-registry.consul.tls.insecureskipverify=true",
           "-proxy.addr=:80,:443;proto=tcp+sni",
           "-proxy.shutdownwait=30s",
           "-insecure"
