@@ -1,5 +1,6 @@
 job "docker" {
   datacenters = ["local"]
+  priority = 90
 
   group "mirror" {
     network {

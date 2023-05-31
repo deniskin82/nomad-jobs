@@ -1,5 +1,6 @@
 job "netdata" {
   datacenters = ["local"]
+  priority = 70
 
   group "netdata" {
     network {

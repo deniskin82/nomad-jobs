@@ -1,5 +1,6 @@
 job "concourse" {
   datacenters = ["local"]
+  priority = 60
 
   group "cicd" {
     count = 1

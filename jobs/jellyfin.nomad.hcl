@@ -1,5 +1,6 @@
 job "dlna" {
   datacenters = ["local"]
+  priority = 30
 
   group "dlna-group" {
     network {

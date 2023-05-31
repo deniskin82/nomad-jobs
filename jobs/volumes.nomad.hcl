@@ -1,6 +1,8 @@
 job "volumes" {
   datacenters = ["local"]
   type = "sysbatch"
+  priority = 99
+
   periodic {
     cron             = "@daily"
     prohibit_overlap = true

@@ -1,5 +1,6 @@
 job "fabio" {
   datacenters = ["local"]
+  priority = 95
 
   group "fabio" {
     network {
