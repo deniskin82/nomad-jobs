@@ -2,7 +2,7 @@ job "fabio" {
   datacenters = ["local"]
   priority = 95
 
-  group "fabio" {
+  group "services" {
     network {
       mode = "host"
 

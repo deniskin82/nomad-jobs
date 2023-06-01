@@ -4,7 +4,7 @@ job "volumes" {
   type = "system"
   priority = 99
 
-  group "volume" {
+  group "services" {
     task "volumes" {
       driver = "raw_exec"
       template {

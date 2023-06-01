@@ -2,7 +2,7 @@ job "netdata" {
   datacenters = ["local"]
   priority = 70
 
-  group "netdata" {
+  group "services" {
     network {
       mode = "cni/bridge"
       port "netdata" {
@@ -10,7 +10,7 @@ job "netdata" {
         to = 19999
       }
     }
-    task "netdata-task" {
+    task "netdata" {
       driver = "containerd-driver"
       env {
         DISABLE_TELEMETRY = "1"

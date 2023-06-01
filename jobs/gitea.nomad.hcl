@@ -2,7 +2,7 @@ job "git" {
   datacenters = ["local"]
   priority = 55
 
-  group "gitea" {
+  group "services" {
     network {
       mode = "cni/bridge"
 
@@ -27,7 +27,7 @@ job "git" {
       }
     }
 
-    task "git" {
+    task "gitea" {
       driver = "containerd-driver"
       env {
         DISABLE_TELEMETRY = "1"

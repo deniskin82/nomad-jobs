@@ -2,7 +2,7 @@ job "dlna" {
   datacenters = ["local"]
   priority = 30
 
-  group "dlna-group" {
+  group "services" {
     network {
       mode = "host"
       port "jellyfin" {

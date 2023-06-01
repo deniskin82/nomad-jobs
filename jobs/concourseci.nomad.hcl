@@ -2,7 +2,7 @@ job "concourse" {
   datacenters = ["local"]
   priority = 60
 
-  group "cicd" {
+  group "services" {
     count = 1
     network {
       mode = "cni/bridge"
