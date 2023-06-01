@@ -160,6 +160,7 @@ resource "nomad_job" "gitea" {
   depends_on = [
     nomad_job.registry
   ]
+  deregister_on_destroy = true
   purge_on_destroy = true
 }
 
