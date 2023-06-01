@@ -1,13 +1,8 @@
 job "volumes" {
   datacenters = ["local"]
-  type = "sysbatch"
+  region = "global"
+  type = "system"
   priority = 99
-
-  periodic {
-    cron             = "@daily"
-    prohibit_overlap = true
-    time_zone        = "America/New_York"
-  }
 
   group "volume" {
     task "volumes" {
@@ -16,16 +11,17 @@ job "volumes" {
         perms = "755"
         data = <<EOH
 #!/bin/sh
-set -xe
+set -e
 {{ range tree "mount/data/volumes" }}mkdir -v -m777 -p /data/volumes/./{{.Key}}
-chmod 0777 /data/volumes/./{{.Key}}
+chmod -v 0777 /data/volumes/./{{.Key}}
 {{ end }}sleep 3
 EOH
         destination = "tmp/mkdirs.sh"
+        change_mode = "restart"
       }
       config {
-        command = "/bin/sh"
-        args = ["tmp/mkdirs.sh"]
+        command = "/bin/bash"
+        args = ["-c", "/bin/sh tmp/mkdirs.sh; while true; do sleep 10; done"]
       }
       resources {
         cpu    = 100
