@@ -106,7 +106,8 @@ resource "nomad_job" "registry" {
     allow_fs = true
   }
   depends_on = [
-    consul_keys.docker
+    consul_keys.docker,
+    nomad_job.volumes
   ]
   purge_on_destroy = true
 }
