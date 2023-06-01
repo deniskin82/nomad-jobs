@@ -42,6 +42,14 @@ resource "consul_keys" "mounts" {
     path = "mount/data/volumes/cicd/postgres"
     value = ""
   }
+  key {
+    path = "mount/data/volumes/gitea/data"
+    value = ""
+  }
+  key {
+    path = "mount/data/volumes/gitea/config"
+    value = ""
+  }
 }
 
 resource "consul_keys" "docker" {
@@ -84,6 +92,9 @@ resource "nomad_job" "volumes" {
     enabled = true
     allow_fs = true
   }
+  depends_on = [ 
+    consul_keys.mounts
+  ]
   purge_on_destroy = true
 }
 
