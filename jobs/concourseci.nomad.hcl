@@ -15,7 +15,7 @@ job "concourse" {
         to = 8080
       }
       port "tsa" {
-        static = 2222
+        static = 2211
         to = 2222
       }
       port "worker" {
