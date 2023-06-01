@@ -150,6 +150,19 @@ resource "nomad_job" "concourseci" {
   purge_on_destroy = true
 }
 
+# resource "nomad_job" "gitea" {
+#   jobspec = file("${path.module}/jobs/gitea.nomad.hcl")
+#   detach = false
+#   hcl2 {
+#     enabled = true
+#     allow_fs = true
+#   }
+#   depends_on = [
+#     nomad_job.registry
+#   ]
+#   purge_on_destroy = true
+# }
+
 resource "nomad_job" "fabio" {
   jobspec = file("${path.module}/jobs/fabio.nomad.hcl")
   detach = false
