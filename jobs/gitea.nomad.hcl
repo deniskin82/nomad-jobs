@@ -1,6 +1,6 @@
 job "git" {
   datacenters = ["local"]
-  priority = 95
+  priority = 55
 
   group "gitea" {
     network {
