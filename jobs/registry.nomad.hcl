@@ -4,7 +4,7 @@ job "docker" {
 
   group "mirror" {
     network {
-      mode = "host"
+      mode = "cni/bridge"
       port "mirror" {
         static = 5001
       }
@@ -27,7 +27,6 @@ job "docker" {
 
       config {
         image = "docker.io/registry:2.8.2"
-        host_network = true
         mounts = [{
           type    = "bind"
           source  = "/data/volumes/docker_registry/cache"
